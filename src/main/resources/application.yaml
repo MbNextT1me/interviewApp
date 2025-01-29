@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /interviewApp
+
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: interviewApp
+  profiles:
+    active: dev
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: interview_app
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/interview_app?useSSL=false
+    username: bestuser
+    password: postgres
+
+  liquibase:
+      change-log: classpath:db/changelog/db.changelog-master.xml
+      enabled: true
