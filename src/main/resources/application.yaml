@@ -22,8 +22,9 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/interview_app?useSSL=false
     username: bestuser
-    password: postgres
+    password: admin
 
   liquibase:
-      change-log: classpath:db/changelog/db.changelog-master.xml
+      change-log: classpath:db/changelog/changelog-master.xml
       enabled: true
+      default-schema: interview_app
