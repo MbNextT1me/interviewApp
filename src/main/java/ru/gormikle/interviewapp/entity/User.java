@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="USER", schema="interview_app")
+@Table(name="\"user\"", schema="interview_app")
 @Data
 public class User {
 
