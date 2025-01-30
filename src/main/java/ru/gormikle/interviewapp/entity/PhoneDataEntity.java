@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name="phone_data", schema="interview_app")
 @Data
-public class PhoneData {
+public class PhoneDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class PhoneData {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity userEntity;
 
     @Column(name = "phone", nullable = false, unique = true, length = 13)
     // Сомнительно насчет длины в 13 символов, учитывая что по формату нужен телефон в 11

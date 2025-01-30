@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name="account", schema="interview_app")
 @Data
-public class Account {
+public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class Account {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    private UserEntity userEntity;
 
     @Column(name = "balance", nullable = false, precision = 15, scale = 2)
     @Min(value = 0, message = "Balance cannot be negative")

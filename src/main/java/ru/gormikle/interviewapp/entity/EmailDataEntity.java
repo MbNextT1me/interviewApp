@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 @Entity
 @Table(name="email_data", schema="interview_app")
 @Data
-public class EmailData {
+public class EmailDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class EmailData {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity userEntity;
 
     @Column(name = "email", nullable = false, unique = true, length = 200)
     @Email(message = "Invalid email format")
