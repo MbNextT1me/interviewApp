@@ -10,7 +10,7 @@
     </changeSet>
 
     <changeSet id="1" author="MbNextT1me">
-        <createTable tableName="USER">
+        <createTable tableName="user">
             <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
@@ -25,7 +25,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="ACCOUNT">
+        <createTable tableName="account">
             <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
@@ -37,7 +37,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="EMAIL_DATA">
+        <createTable tableName="email_data">
             <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
@@ -49,7 +49,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="PHONE_DATA">
+        <createTable tableName="phone_data">
             <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
@@ -61,17 +61,17 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="ACCOUNT" baseColumnNames="USER_ID"
+        <addForeignKeyConstraint baseTableName="account" baseColumnNames="USER_ID"
                                  constraintName="fk_account_user"
-                                 referencedTableName="USER" referencedColumnNames="ID"/>
+                                 referencedTableName="user" referencedColumnNames="ID"/>
 
-        <addForeignKeyConstraint baseTableName="EMAIL_DATA" baseColumnNames="USER_ID"
+        <addForeignKeyConstraint baseTableName="email_data" baseColumnNames="USER_ID"
                                  constraintName="fk_email_data_user"
-                                 referencedTableName="USER" referencedColumnNames="ID"/>
+                                 referencedTableName="user" referencedColumnNames="ID"/>
 
-        <addForeignKeyConstraint baseTableName="PHONE_DATA" baseColumnNames="USER_ID"
+        <addForeignKeyConstraint baseTableName="phone_data" baseColumnNames="USER_ID"
                                  constraintName="fk_phone_data_user"
-                                 referencedTableName="USER" referencedColumnNames="ID"/>
+                                 referencedTableName="user" referencedColumnNames="ID"/>
     </changeSet>
 
 </databaseChangeLog>
