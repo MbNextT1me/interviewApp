@@ -11,7 +11,7 @@
 
     <changeSet id="1" author="MbNextT1me">
         <createTable tableName="user">
-            <column name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="NAME" type="VARCHAR(500)">
@@ -26,7 +26,7 @@
         </createTable>
 
         <createTable tableName="account">
-            <column name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="USER_ID" type="BIGINT">
@@ -38,7 +38,7 @@
         </createTable>
 
         <createTable tableName="email_data">
-            <column name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="USER_ID" type="BIGINT">
@@ -50,7 +50,7 @@
         </createTable>
 
         <createTable tableName="phone_data">
-            <column name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="USER_ID" type="BIGINT">
@@ -73,5 +73,35 @@
                                  constraintName="fk_phone_data_user"
                                  referencedTableName="user" referencedColumnNames="ID"/>
     </changeSet>
+
+    <changeSet id="2" author="MbNextT1me">
+        <insert tableName="user">
+            <column name="NAME" value="User One"/>
+            <column name="DATE_OF_BIRTH" value="1990-01-01"/>
+            <column name="PASSWORD" value="$2a$10$Uj1gfjjoiOE.pB2V1/9cn.UwLQK5fxmMNp9kU9dzoZ7pMW4RgJKuG"/>
+        </insert>
+        <insert tableName="user">
+            <column name="NAME" value="User Two"/>
+            <column name="DATE_OF_BIRTH" value="1995-05-05"/>
+            <column name="PASSWORD" value="$2a$10$Uj1gfjjoiOE.pB2V1/9cn.UwLQK5fxmMNp9kU9dzoZ7pMW4RgJKuG"/>
+        </insert>
+        <insert tableName="email_data">
+            <column name="USER_ID" value="1"/>
+            <column name="EMAIL" value="user1@example.com"/>
+        </insert>
+        <insert tableName="email_data">
+            <column name="USER_ID" value="2"/>
+            <column name="EMAIL" value="user2@example.com"/>
+        </insert>
+        <insert tableName="phone_data">
+            <column name="USER_ID" value="1"/>
+            <column name="PHONE" value="72345678901"/>
+        </insert>
+        <insert tableName="phone_data">
+            <column name="USER_ID" value="2"/>
+            <column name="PHONE" value="72345677666"/>
+        </insert>
+    </changeSet>
+
 
 </databaseChangeLog>
