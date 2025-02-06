@@ -18,7 +18,7 @@ public class UserController {
         return ResponseEntity.ok("Successfully added email");
     }
 
-    @PostMapping("/{userId}/email/update")
+    @PutMapping("/{userId}/email/update")
     public ResponseEntity<String> updateEmail(@PathVariable long userId,
                                               @RequestParam String oldEmail,
                                               @RequestParam String newEmail) {
@@ -38,7 +38,7 @@ public class UserController {
         return ResponseEntity.ok("Successfully added phone");
     }
 
-    @PostMapping("/{userId}/phone/update")
+    @PutMapping("/{userId}/phone/update")
     public ResponseEntity<String> updatePhone(@PathVariable long userId,
                                               @RequestParam String oldPhone,
                                               @RequestParam String newPhone) {
