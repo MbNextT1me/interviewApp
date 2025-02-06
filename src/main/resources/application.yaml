@@ -10,7 +10,6 @@ spring:
     name: interviewApp
   profiles:
     active: dev
-
   jpa:
     show-sql: true
     hibernate:
@@ -18,6 +17,7 @@ spring:
     properties:
       hibernate:
         default_schema: interview_app
+    open-in-view: false
 
   datasource:
     url: jdbc:postgresql://localhost:5432/interview_app?useSSL=false
@@ -28,3 +28,8 @@ spring:
       change-log: classpath:db/changelog/changelog-master.xml
       enabled: true
       default-schema: interview_app
+
+jwt:
+  secret: MySuperSecretKeyForJWTThatIsLongEnoughAndSecureForHS512Algorithm
+  expiration: 3600000
+  refresh-expiration: 86400000

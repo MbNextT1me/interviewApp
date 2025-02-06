@@ -21,6 +21,7 @@
         <liquibase.version>4.9.1</liquibase.version>
         <spring-security.version>5.7.11</spring-security.version>
         <h2.version>2.1.214</h2.version>
+        <io.jsonwebtoken>0.12.6</io.jsonwebtoken>
     </properties>
 
     <dependencies>
@@ -78,6 +79,28 @@
             <scope>runtime</scope>
             <version>${h2.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${io.jsonwebtoken}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${io.jsonwebtoken}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${io.jsonwebtoken}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
