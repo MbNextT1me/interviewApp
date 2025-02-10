@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: interview_app
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+    enabled: true
+    default-schema: interview_app
+jwt:
+  secret: MySuperSecretKeyForJWTThatIsLongEnoughAndSecureForHS512Algorithm
+  expiration: 3600000
+  refresh-expiration: 86400000
