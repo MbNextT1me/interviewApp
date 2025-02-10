@@ -1,9 +1,18 @@
 package ru.gormikle.interviewapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gormikle.interviewapp.entity.UserEntity;
 import ru.gormikle.interviewapp.service.UserService;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -50,5 +59,21 @@ public class UserController {
     public ResponseEntity<String> deletePhone(@PathVariable long userId, @RequestParam String phone) {
         userService.deletePhone(userId, phone);
         return ResponseEntity.ok("Successfully deleted phone");
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<UserEntity>> searchUsers(
+            @RequestParam Optional<String> dateOfBirth,
+            @RequestParam Optional<String> phone,
+            @RequestParam Optional<String> email,
+            @RequestParam Optional<String> name,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Optional<LocalDate> date = dateOfBirth.map(LocalDate::parse);
+
+        Page<UserEntity> users = userService.searchUsers(date, phone, email, name, pageable);
+        return ResponseEntity.ok(users);
     }
 }
