@@ -6,9 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.gormikle.interviewapp.dto.CreateUserRequestDto;
 import ru.gormikle.interviewapp.entity.UserEntity;
 import ru.gormikle.interviewapp.service.UserService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
@@ -20,6 +22,19 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+
+    @PostMapping("/create")
+    public ResponseEntity<UserEntity> createUser(@RequestBody @Valid CreateUserRequestDto request) {
+        UserEntity user = userService.createUser(
+                request.getName(),
+                request.getDateOfBirth(),
+                request.getPassword(),
+                request.getInitialBalance(),
+                request.getEmail(),
+                request.getPhone()
+        );
+        return ResponseEntity.ok(user);
+    }
 
     @PostMapping("/{userId}/email")
     public ResponseEntity<String> addEmail(@PathVariable long userId, @RequestParam String email) {

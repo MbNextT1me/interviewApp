@@ -1,5 +1,6 @@
 package ru.gormikle.interviewapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class EmailDataEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private UserEntity userEntity;
 
     @Column(name = "email", nullable = false, unique = true, length = 200)
