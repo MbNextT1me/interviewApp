@@ -30,9 +30,12 @@
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="USER_ID" type="BIGINT">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="BALANCE" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INITIAL_BALANCE" type="DECIMAL">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -62,16 +65,19 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="account" baseColumnNames="USER_ID"
-                                 constraintName="fk_account_user"
-                                 referencedTableName="user" referencedColumnNames="ID"/>
+                                 constraintName="fk_user_account"
+                                 referencedTableName="user" referencedColumnNames="ID"
+                                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseTableName="email_data" baseColumnNames="USER_ID"
                                  constraintName="fk_email_data_user"
-                                 referencedTableName="user" referencedColumnNames="ID"/>
+                                 referencedTableName="user" referencedColumnNames="ID"
+                                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseTableName="phone_data" baseColumnNames="USER_ID"
                                  constraintName="fk_phone_data_user"
-                                 referencedTableName="user" referencedColumnNames="ID"/>
+                                 referencedTableName="user" referencedColumnNames="ID"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="2" author="MbNextT1me">
@@ -84,6 +90,16 @@
             <column name="NAME" value="User Two"/>
             <column name="DATE_OF_BIRTH" value="1995-05-05"/>
             <column name="PASSWORD" value="$2a$10$Uj1gfjjoiOE.pB2V1/9cn.UwLQK5fxmMNp9kU9dzoZ7pMW4RgJKuG"/>
+        </insert>
+        <insert tableName="account">
+            <column name="USER_ID" value="1"/>
+            <column name="BALANCE" value="700.00"/>
+            <column name="INITIAL_BALANCE" value="700.00"/>
+        </insert>
+        <insert tableName="account">
+            <column name="USER_ID" value="2"/>
+            <column name="BALANCE" value="1500.00"/>
+            <column name="INITIAL_BALANCE" value="1500.00"/>
         </insert>
         <insert tableName="email_data">
             <column name="USER_ID" value="1"/>
@@ -102,6 +118,4 @@
             <column name="PHONE" value="72345677666"/>
         </insert>
     </changeSet>
-
-
 </databaseChangeLog>
