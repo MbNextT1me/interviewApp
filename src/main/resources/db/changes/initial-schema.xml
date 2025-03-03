@@ -118,4 +118,12 @@
             <column name="PHONE" value="72345677666"/>
         </insert>
     </changeSet>
+
+    <changeSet id="3" author="MbNextT1me">
+        <addColumn tableName="account">
+            <column name="version" type="BIGINT" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
