@@ -14,7 +14,7 @@ public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
@@ -27,6 +27,10 @@ public class AccountEntity {
 
     @Column(name = "initial_balance", nullable = false, precision = 15, scale = 2)
     private BigDecimal initialBalance;
+
+    // Оптимистичная блокировка
+    @Version
+    private Long version;
 
     public void setBalance(BigDecimal newBalance) {
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
