@@ -19,6 +19,14 @@ spring:
         default_schema: interview_app
     open-in-view: false
 
+  springdoc:
+    api-docs:
+      enabled: true
+    swagger-ui:
+      path: /swagger-ui.html
+      operationsSorter: method
+      tagsSorter: alpha
+
   datasource:
     url: jdbc:postgresql://localhost:5432/interview_app?useSSL=false
     username: bestuser
