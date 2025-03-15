@@ -2,11 +2,14 @@ package ru.gormikle.interviewapp.service;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gormikle.interviewapp.dto.UserDto;
 import ru.gormikle.interviewapp.entity.AccountEntity;
 import ru.gormikle.interviewapp.entity.EmailDataEntity;
 import ru.gormikle.interviewapp.entity.PhoneDataEntity;
@@ -32,6 +35,7 @@ public class UserService {
     private final AccountRepository accountRepository;
 
     @Transactional
+    @CacheEvict(value = {"users", "usersSearch"}, allEntries = true)
     public UserEntity createUser(String name, LocalDate dateOfBirth, String password, BigDecimal initialBalance, String email, String phone) {
         if (emailRepository.existsByEmail(email)) {
             throw new RuntimeException("Email already exists");
@@ -71,6 +75,13 @@ public class UserService {
         return user;
     }
 
+    @Transactional(readOnly = true)
+    @Cacheable(value = "users", key = "#userId")
+    public UserDto getUserById(Long userId) {
+        UserEntity user = userRepository.findById(userId).orElse(null);
+        return UserDto.fromEntity(user);
+    }
+
     @Transactional
     public void addEmail(long userId, String email) {
         if (emailRepository.existsByEmail(email)) {
@@ -95,7 +106,7 @@ public class UserService {
         EmailDataEntity emailEntity = emailRepository.findByEmail(oldEmail)
                 .orElseThrow(() -> new RuntimeException("Old email not found"));
 
-        if (emailEntity.getUserEntity().getId() != userId) {
+        if (!emailEntity.getUserEntity().getId().equals(userId)) {
             throw new RuntimeException("You can only update your own email.");
         }
 
@@ -108,7 +119,7 @@ public class UserService {
         EmailDataEntity emailEntity = emailRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email not found"));
 
-        if (emailEntity.getUserEntity().getId() != userId) {
+        if (!emailEntity.getUserEntity().getId().equals(userId)) {
             throw new RuntimeException("You can only delete your own email.");
         }
 
@@ -140,7 +151,7 @@ public class UserService {
         PhoneDataEntity phoneEntity = phoneRepository.findByPhone(oldPhone)
                 .orElseThrow(() -> new RuntimeException("Old phone not found."));
 
-        if (phoneEntity.getUserEntity().getId() != userId) {
+        if (!phoneEntity.getUserEntity().getId().equals(userId)) {
             throw new RuntimeException("You can only update your own phone.");
         }
 
@@ -153,7 +164,7 @@ public class UserService {
         PhoneDataEntity phoneEntity = phoneRepository.findByPhone(phone)
                 .orElseThrow(() -> new RuntimeException("Phone not found."));
 
-        if (phoneEntity.getUserEntity().getId() != userId) {
+        if (!phoneEntity.getUserEntity().getId().equals(userId)) {
             throw new RuntimeException("You can only delete your own phone.");
         }
 
@@ -161,6 +172,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "usersSearch", key = "#dateOfBirth?.orElse('') + #phone?.orElse('') + " +
+            "#email?.orElse('') + #name?.orElse('') + #pageable.pageNumber + '-' + #pageable.pageSize")
     public Page<UserEntity> searchUsers(Optional<LocalDate> dateOfBirth, Optional<String> phone,
                                         Optional<String> email, Optional<String> name, Pageable pageable) {
         Specification<UserEntity> spec = Specification.where(null);

@@ -7,8 +7,6 @@ import ru.gormikle.interviewapp.entity.UserEntity;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
-
     Optional<UserEntity> findByEmailDataEntityListEmail(String email);
-
     Optional<UserEntity> findByPhoneDataEntityListPhone(String phone);
 }
