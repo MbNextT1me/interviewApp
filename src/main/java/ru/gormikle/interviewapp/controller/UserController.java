@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gormikle.interviewapp.dto.CreateUserRequestDto;
+import ru.gormikle.interviewapp.dto.UserDto;
 import ru.gormikle.interviewapp.entity.UserEntity;
 import ru.gormikle.interviewapp.service.UserService;
 
@@ -34,6 +35,11 @@ public class UserController {
                 request.getPhone()
         );
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable long userId) {
+        return ResponseEntity.ok(userService.getUserById(userId));
     }
 
     @PostMapping("/{userId}/email")
