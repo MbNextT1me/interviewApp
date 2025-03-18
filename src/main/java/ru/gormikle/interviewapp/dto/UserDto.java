@@ -1,15 +1,19 @@
 package ru.gormikle.interviewapp.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.gormikle.interviewapp.entity.UserEntity;
-import ru.gormikle.interviewapp.entity.PhoneDataEntity;
+import lombok.NoArgsConstructor;
 import ru.gormikle.interviewapp.entity.EmailDataEntity;
+import ru.gormikle.interviewapp.entity.PhoneDataEntity;
+import ru.gormikle.interviewapp.entity.UserEntity;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     private Long id;
     private String name;

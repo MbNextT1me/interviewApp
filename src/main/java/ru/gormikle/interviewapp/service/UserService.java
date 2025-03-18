@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gormikle.interviewapp.dto.PagedResponseDto;
 import ru.gormikle.interviewapp.dto.UserDto;
 import ru.gormikle.interviewapp.entity.AccountEntity;
 import ru.gormikle.interviewapp.entity.EmailDataEntity;
@@ -23,7 +24,9 @@ import ru.gormikle.interviewapp.specification.UserSpecification;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +82,7 @@ public class UserService {
     @Cacheable(value = "users", key = "#userId")
     public UserDto getUserById(Long userId) {
         UserEntity user = userRepository.findById(userId).orElse(null);
-        return UserDto.fromEntity(user);
+        return UserDto.fromEntity(Objects.requireNonNull(user));
     }
 
     @Transactional
@@ -172,10 +175,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "usersSearch", key = "#dateOfBirth?.orElse('') + #phone?.orElse('') + " +
-            "#email?.orElse('') + #name?.orElse('') + #pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<UserEntity> searchUsers(Optional<LocalDate> dateOfBirth, Optional<String> phone,
-                                        Optional<String> email, Optional<String> name, Pageable pageable) {
+    public PagedResponseDto<UserDto> searchUsers(Optional<LocalDate> dateOfBirth, Optional<String> phone,
+                                                    Optional<String> email, Optional<String> name, Pageable pageable) {
         Specification<UserEntity> spec = Specification.where(null);
 
         if (dateOfBirth.isPresent()) {
@@ -197,6 +198,11 @@ public class UserService {
             Hibernate.initialize(user.getEmailDataEntityList());
         });
 
-        return users;
+        PagedResponseDto<UserDto> pagedResponseDto = new PagedResponseDto<>();
+        pagedResponseDto.setContent(users.getContent().stream().map(UserDto::fromEntity).collect(Collectors.toList()));
+        pagedResponseDto.setTotalElements(users.getTotalElements());
+        pagedResponseDto.setTotalPages(users.getTotalPages());
+
+        return pagedResponseDto;
     }
 }

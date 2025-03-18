@@ -37,6 +37,7 @@ public class AccountEntityRepositoryTest {
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setUserEntity(savedUserEntity);
         accountEntity.setBalance(new BigDecimal("123.45"));
+        accountEntity.setInitialBalance(new BigDecimal("123.45"));
 
         AccountEntity savedAccountEntity = accountRepository.save(accountEntity);
         AccountEntity findAccountEntity = accountRepository.findById(savedAccountEntity.getId()).orElse(null);

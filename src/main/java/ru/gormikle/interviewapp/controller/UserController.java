@@ -1,12 +1,12 @@
 package ru.gormikle.interviewapp.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gormikle.interviewapp.dto.CreateUserRequestDto;
+import ru.gormikle.interviewapp.dto.PagedResponseDto;
 import ru.gormikle.interviewapp.dto.UserDto;
 import ru.gormikle.interviewapp.entity.UserEntity;
 import ru.gormikle.interviewapp.service.UserService;
@@ -83,7 +83,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<UserEntity>> searchUsers(
+    public ResponseEntity<PagedResponseDto<UserDto>> searchUsers(
             @RequestParam Optional<String> dateOfBirth,
             @RequestParam Optional<String> phone,
             @RequestParam Optional<String> email,
@@ -94,7 +94,7 @@ public class UserController {
         Pageable pageable = PageRequest.of(page, size);
         Optional<LocalDate> date = dateOfBirth.map(LocalDate::parse);
 
-        Page<UserEntity> users = userService.searchUsers(date, phone, email, name, pageable);
+        PagedResponseDto<UserDto> users = userService.searchUsers(date, phone, email, name, pageable);
         return ResponseEntity.ok(users);
     }
 }
