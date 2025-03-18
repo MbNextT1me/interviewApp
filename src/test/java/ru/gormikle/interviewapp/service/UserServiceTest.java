@@ -4,12 +4,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import ru.gormikle.interviewapp.AbstractTestContainer;
+import ru.gormikle.interviewapp.dto.PagedResponseDto;
+import ru.gormikle.interviewapp.dto.UserDto;
 import ru.gormikle.interviewapp.entity.EmailDataEntity;
 import ru.gormikle.interviewapp.entity.PhoneDataEntity;
 import ru.gormikle.interviewapp.entity.UserEntity;
+import ru.gormikle.interviewapp.repository.EmailDataRepository;
+import ru.gormikle.interviewapp.repository.PhoneDataRepository;
 import ru.gormikle.interviewapp.repository.UserRepository;
 
 import java.time.LocalDate;
@@ -22,14 +25,24 @@ class UserServiceTest extends AbstractTestContainer {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EmailDataRepository emailDataRepository;
+    @Autowired
+    private PhoneDataRepository phoneDataRepository;
 
     @Autowired
     private UserService userService;
 
     @BeforeEach
-    void setUp() {
-        userRepository.deleteAll();
+    public void setUp() {
+        clearDatabase();
         seedDatabase();
+    }
+
+    private void clearDatabase() {
+        emailDataRepository.deleteAll();
+        phoneDataRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     private void seedDatabase() {
@@ -75,67 +88,67 @@ class UserServiceTest extends AbstractTestContainer {
 
     @Test
     void testSearchByDateOfBirth() {
-        Page<UserEntity> users = userService.searchUsers(
+        PagedResponseDto<UserDto> users = userService.searchUsers(
                 Optional.of(LocalDate.of(2000, 1, 1)),
                 Optional.empty(), Optional.empty(), Optional.empty(),
                 PageRequest.of(0, 10)
         );
 
-        assertThat(users).hasSize(1);
+        assertThat(users.getContent()).hasSize(1);
         assertThat(users.getContent().get(0).getName()).isEqualTo("Bob");
     }
 
     @Test
     void testSearchByPhone() {
-        Page<UserEntity> users = userService.searchUsers(
+        PagedResponseDto<UserDto> users = userService.searchUsers(
                 Optional.empty(), Optional.of("79207865432"),
                 Optional.empty(), Optional.empty(),
                 PageRequest.of(0, 10)
         );
 
-        assertThat(users).hasSize(1);
+        assertThat(users.getContent()).hasSize(1);
         assertThat(users.getContent().get(0).getName()).isEqualTo("Alice");
     }
 
     @Test
     void testSearchByEmail() {
-        Page<UserEntity> users = userService.searchUsers(
+        PagedResponseDto<UserDto> users = userService.searchUsers(
                 Optional.empty(), Optional.empty(),
                 Optional.of("alice@example.com"), Optional.empty(),
                 PageRequest.of(0, 10)
         );
 
-        assertThat(users).hasSize(1);
+        assertThat(users.getContent()).hasSize(1);
         assertThat(users.getContent().get(0).getName()).isEqualTo("Alice");
     }
 
     @Test
     void testSearchByName() {
-        Page<UserEntity> users = userService.searchUsers(
+        PagedResponseDto<UserDto> users = userService.searchUsers(
                 Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.of("A"),
                 PageRequest.of(0, 10)
         );
 
-        assertThat(users).hasSize(1);
+        assertThat(users.getContent()).hasSize(1);
         assertThat(users.getContent().get(0).getName()).isEqualTo("Alice");
     }
 
     @Test
     void testPagination() {
-        Page<UserEntity> usersPage1 = userService.searchUsers(
+        PagedResponseDto<UserDto>users1 = userService.searchUsers(
                 Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(),
                 PageRequest.of(0, 2)
         );
 
-        Page<UserEntity> usersPage2 = userService.searchUsers(
+        PagedResponseDto<UserDto>users2 = userService.searchUsers(
                 Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(),
                 PageRequest.of(1, 2)
         );
 
-        assertThat(usersPage1.getContent()).hasSize(2);
-        assertThat(usersPage2.getContent()).hasSize(1);
+        assertThat(users1.getContent()).hasSize(2);
+        assertThat(users2.getContent()).hasSize(1);
     }
 }
